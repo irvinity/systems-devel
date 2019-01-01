@@ -1,0 +1,74 @@
+.LOCATION  LABEL      OPCODE     OPERAND    OBJECT CODE     ERRORS
+
+1000       COPY       START      1000                                   
+1000       FIRSTRETADR STL        RETADR     140             0IL         
+1003       CLOOPRDREC JSUB48     RDREC      480             0IL         
+1006                  LDA        LENGTH     000                         
+1009                  COMP28     ZERO       281030                      
+100C                  JEQ        ENDFIL     300                         
+100F                  JSUB48     WRREC      480                         
+1012                  J          CLOOP      3C0                         
+1015       00                                               0IL         
+1018                  STA        BUFFER     0C0                         
+101B                  LDA        THREE      000                         
+101E                  STA        LENGTH     0C0                         
+1021                  JSUB48     WRREC      480                         
+1024                  LDL        RETADR     080                         
+1027                  RSUB4C     RETURN     4C0000                      
+102A       EOF        BYTE       C'EOF'     454F46                      
+102D       THREE3     WORD       3          000003                      
+1030       ZERO       WORD       0          000000                      
+1033       RETAD1     RESW       1                                      
+1036       LENGT1     RESW       1                                      
+1039       BUFFE4096  RESB       4096                       0IL         
+.                                                                        
+.	SUBROUTINE TO READ RECORD INTO BUFFER                                                                        
+.                                                                        
+2039       RDRECZERO  LDX        ZERO       041030          0IL         
+203C                  LDA        ZERO       001030                      
+203F       RLOOPINPUT TD         INPUT      E00             0IL         
+2042                  JEQ        RLOOP      300                         
+2045                  RD         INPUT      D80                         
+2048                  COMP28     ZERO       281030                      
+204B                  JEQ        EXIT       302057                      
+204E                  STCH54     54                                     
+2051                  TIX        MAXLEN     2C0                         
+2054                  JLT        RLOOP      380                         
+2057       EXIT       STX        LENGTH     100                         
+205A                  RSUB4C     RETURN     4C0000                      
+205D       INPUTX'F1' BYTE       X'F1'      F1              0IL         
+205E       MAXLE4096  WORD       4096       001000          0IL         
+.                                                                        
+.	SUBROUTINE TO WRITE RECORD FROM BUFFER                                                                        
+.                                                                        
+2061       WRRECZERO  LDX        ZERO       041030          0IL         
+2064       WLOOPOUTPUT TD         OUTPUT     E00             0IL         
+2067                  JEQ        WLOOP      300                         
+206A                  LDCH50     50                                     
+206D                  WD         OUTPUT     DC0                         
+2070                  TIX        LENGTH     2C0                         
+2073                  JLT        WLOOP      380                         
+2076                  RSUB4C     RETURN     4C0000                      
+2079       OUTPUX'05' BYTE       X'05'      05              0IL         
+           END        FIRST                       
+.
+.	SYMBOL 	  	ADDRESS
+. ---------------------------------
+.|	MAXLE4096 |	205E      |
+.|	LENGT1    |	1036      |
+.|	RLOOPINPUT|	203F      |
+.|	RETAD1    |	1033      |
+.|	OUTPUX'05'|	2079      |
+.|	ENDFIEOF  |	1015      |
+.|	EXIT      |	2057      |
+.|	THREE3    |	102D      |
+.|	WLOOPOUTPUT|	2064      |
+.|	RDRECZERO |	2039      |
+.|	WRRECZERO |	2061      |
+.|	ZERO      |	1030      |
+.|	INPUTX'F1'|	205D      |
+.|	FIRSTRETADR|	1000      |
+.|	CLOOPRDREC|	1003      |
+.|	EOF       |	102A      |
+.|	BUFFE4096 |	1039      |
+. ---------------------------------
